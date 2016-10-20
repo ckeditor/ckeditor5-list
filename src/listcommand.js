@@ -187,6 +187,11 @@ export default class ListCommand extends Command {
 		}
 
 		const selection = this.editor.document.selection;
+
+		if ( selection.getFirstPosition().root.rootName == '$graveyard' ) {
+			return false;
+		}
+
 		const schema = this.editor.document.schema;
 		const position = getPositionBeforeBlock( selection.getFirstPosition(), schema );
 

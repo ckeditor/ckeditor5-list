@@ -104,6 +104,11 @@ describe( 'ListCommand', () => {
 			doc.selection.collapse( doc.getRoot().getChild( 4 ) );
 			expect( command.isEnabled ).to.be.false;
 		} );
+
+		it( 'should be false if selection is in graveyard', () => {
+			doc.selection.collapse( doc.graveyard );
+			expect( command.isEnabled ).to.be.false;
+		} );
 	} );
 
 	describe( '_doExecute', () => {
