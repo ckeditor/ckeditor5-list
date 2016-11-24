@@ -38,14 +38,11 @@ export default class ListCommand extends Command {
 		 */
 		this.set( 'value', false );
 
-		const changeCallback = () => {
+		// Listen on selection and document changes and set the current command's value.
+		this.listenTo( editor.document.selection, 'change', () => {
 			this.refreshValue();
 			this.refreshState();
-		};
-
-		// Listen on selection and document changes and set the current command's value.
-		this.listenTo( editor.document.selection, 'change:range', changeCallback );
-		this.listenTo( editor.document, 'changesDone', changeCallback );
+		} );
 	}
 
 	/**
@@ -195,6 +192,11 @@ export default class ListCommand extends Command {
 		}
 
 		const selection = this.editor.document.selection;
+
+		if ( selection.getFirstPosition().root.rootName == '$graveyard' ) {
+			return false;
+		}
+
 		const schema = this.editor.document.schema;
 		const position = getPositionBeforeBlock( selection.getFirstPosition(), schema );
 

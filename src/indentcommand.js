@@ -32,12 +32,8 @@ export default class IndentCommand extends Command {
 		 */
 		this._indentBy = indentDirection == 'forward' ? 1 : -1;
 
-		// Refresh command state after selection is changed or changes has been done to the document.
-		this.listenTo( editor.document.selection, 'change:range', () => {
-			this.refreshState();
-		} );
-
-		this.listenTo( editor.document, 'changesDone', () => {
+		// Refresh command state after selection is changed.
+		this.listenTo( editor.document.selection, 'change', () => {
 			this.refreshState();
 		} );
 	}
