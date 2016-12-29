@@ -45,7 +45,18 @@ describe( 'List', () => {
 
 	it( 'should set up keys for bulleted list and numbered list', () => {
 		expect( bulletedListButton ).to.be.instanceOf( ButtonView );
+		expect( bulletedListButton.isOn ).to.be.false;
+		expect( bulletedListButton.label ).to.equal( 'Bulleted List' );
+		expect( bulletedListButton.icon ).to.equal( 'bulletedlist' );
+		expect( bulletedListButton.keystroke ).to.be.undefined;
+		expect( bulletedListButton.tooltip ).to.be.true;
+
 		expect( numberedListButton ).to.be.instanceOf( ButtonView );
+		expect( numberedListButton.isOn ).to.be.false;
+		expect( numberedListButton.label ).to.equal( 'Numbered List' );
+		expect( numberedListButton.icon ).to.equal( 'numberedlist' );
+		expect( numberedListButton.keystroke ).to.be.undefined;
+		expect( numberedListButton.tooltip ).to.be.true;
 	} );
 
 	it( 'should execute proper commands when buttons are used', () => {

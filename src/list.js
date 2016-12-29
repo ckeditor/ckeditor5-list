@@ -92,7 +92,8 @@ export default class List extends Plugin {
 
 			buttonView.set( {
 				label: label,
-				icon: commandName.toLowerCase()
+				icon: commandName.toLowerCase(),
+				tooltip: true
 			} );
 
 			// Bind button model to command.
