@@ -5,12 +5,12 @@
 
 /* globals document */
 
-import ClassicTestEditor from 'tests/core/_utils/classictesteditor.js';
-import List from 'ckeditor5/list/list.js';
-import Paragraph from 'ckeditor5/paragraph/paragraph.js';
-import ListEngine from 'ckeditor5/list/listengine.js';
-import ButtonView from 'ckeditor5/ui/button/buttonview.js';
-import { getCode } from 'ckeditor5/utils/keyboard.js';
+import ClassicTestEditor from 'ckeditor5-core/tests/_utils/classictesteditor';
+import List from 'ckeditor5-list/src/list';
+import Paragraph from 'ckeditor5-paragraph/src/paragraph';
+import ListEngine from 'ckeditor5-list/src/listengine';
+import ButtonView from 'ckeditor5-ui/src/button/buttonview';
+import { getCode } from 'ckeditor5-utils/src/keyboard';
 
 describe( 'List', () => {
 	let editor, bulletedListButton, numberedListButton, schema;
@@ -47,14 +47,14 @@ describe( 'List', () => {
 		expect( bulletedListButton ).to.be.instanceOf( ButtonView );
 		expect( bulletedListButton.isOn ).to.be.false;
 		expect( bulletedListButton.label ).to.equal( 'Bulleted List' );
-		expect( bulletedListButton.icon ).to.equal( 'bulletedlist' );
+		expect( bulletedListButton.icon ).to.match( /<svg / );
 		expect( bulletedListButton.keystroke ).to.be.undefined;
 		expect( bulletedListButton.tooltip ).to.be.true;
 
 		expect( numberedListButton ).to.be.instanceOf( ButtonView );
 		expect( numberedListButton.isOn ).to.be.false;
 		expect( numberedListButton.label ).to.equal( 'Numbered List' );
-		expect( numberedListButton.icon ).to.equal( 'numberedlist' );
+		expect( numberedListButton.icon ).to.match( /<svg / );
 		expect( numberedListButton.keystroke ).to.be.undefined;
 		expect( numberedListButton.tooltip ).to.be.true;
 	} );
