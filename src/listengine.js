@@ -43,7 +43,6 @@ export default class ListEngine extends Plugin {
 		schema.registerItem( 'listItem', '$block' );
 		schema.allow( {
 			name: 'listItem',
-			inside: '$root',
 			attributes: [ 'type', 'indent' ]
 		} );
 		schema.requireAttributes( 'listItem', [ 'type', 'indent' ] );

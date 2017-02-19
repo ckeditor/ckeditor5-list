@@ -53,6 +53,35 @@ describe( 'ListEngine', () => {
 		expect( doc.schema.check( { name: 'listItem', inside: '$root', attributes: [ 'indent', 'type' ] } ) ).to.be.true;
 	} );
 
+	// See #34.
+	it( 'should be allowed everywhere where $block is', () => {
+		doc.schema.registerItem( 'quote' );
+		doc.schema.allow( { name: 'quote', inside: '$root' } );
+		doc.schema.allow( { name: '$block', inside: 'quote' } );
+
+		expect( doc.schema.check( {
+			name: 'listItem',
+			inside: [ '$root', 'quote' ]
+		} ) ).to.be.false;
+
+		expect( doc.schema.check( {
+			name: 'listItem',
+			inside: [ '$root', 'quote' ],
+			attributes: [ 'indent', 'type' ]
+		} ) ).to.be.true;
+	} );
+
+	it( 'should not be allowed where $block is not', () => {
+		doc.schema.registerItem( 'image' );
+		doc.schema.allow( { name: 'image', inside: '$root' } );
+
+		expect( doc.schema.check( {
+			name: 'listItem',
+			inside: [ '$root', 'image' ],
+			attributes: [ 'indent', 'type' ]
+		} ) ).to.be.false;
+	} );
+
 	describe( 'commands', () => {
 		it( 'should register bulleted list command', () => {
 			expect( editor.commands.has( 'bulletedList' ) ).to.be.true;
