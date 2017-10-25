@@ -289,7 +289,7 @@ export function modelViewSplitOnInsert( evt, data, consumable, conversionApi ) {
 					// If `mergePos` is in `previousList` it means that the lists got merged.
 					// In this case, we need to fix insert position.
 					if ( mergePos && mergePos.parent == previousList ) {
-						viewPosition.offset--;
+						viewPosition = viewPosition.getShiftedBy( -1 );
 					}
 				}
 			}
