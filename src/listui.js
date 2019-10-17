@@ -9,9 +9,9 @@
 
 import { createUIComponent } from './utils';
 
-import numberedListIcon from './theme/icons/numberedlist.svg';
-import bulletedListIcon from './theme/icons/bulletedlist.svg';
-import alphaListIcon from './theme/icons/alphalist.svg';
+import numberedListIcon from '../theme/icons/numberedlist.svg';
+import bulletedListIcon from '../theme/icons/bulletedlist.svg';
+import alphaListIcon from '../theme/icons/alphalist.svg';
 
 
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
