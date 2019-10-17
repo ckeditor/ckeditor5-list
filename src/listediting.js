@@ -102,6 +102,7 @@ export default class ListEditing extends Plugin {
 
 		// Register commands for numbered and bulleted list.
 		editor.commands.add( 'numberedList', new ListCommand( editor, 'numbered' ) );
+		editor.commands.add( 'letteredList', new ListCommand(editor, 'lettered'  ) );
 		editor.commands.add( 'bulletedList', new ListCommand( editor, 'bulleted' ) );
 
 		// Register commands for indenting.

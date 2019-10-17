@@ -122,7 +122,7 @@ export function modelViewChangeType( evt, data, conversionApi ) {
 	// Change name of the view list that holds the changed view item.
 	// We cannot just change name property, because that would not render properly.
 	const viewList = viewItem.parent;
-	const listName = data.attributeNewValue == 'numbered' ? 'ol' : 'ul';
+	const listName = data.attributeNewValue === 'numbered' || data.attributeNewValue === 'lettered' ? 'ol' : 'ul';
 
 	viewWriter.rename( listName, viewList );
 }
@@ -143,6 +143,36 @@ export function modelViewMergeAfterChangeType( evt, data, conversionApi ) {
 	// Merge the changed view list with other lists, if possible.
 	mergeViewLists( viewWriter, viewList, viewList.nextSibling );
 	mergeViewLists( viewWriter, viewList.previousSibling, viewList );
+
+	let listStyle = null;
+	let listType = null;
+	if (data.attributeNewValue === 'numbered') {
+		listStyle = 'decimal';
+	    listType = '1';
+	} else if (data.attributeNewValue === 'lettered') {
+	    listStyle = 'lower-alpha';
+	    listType = 'a';
+	} else {
+	    listStyle = null;
+	}
+	viewWriter.setStyle('list-style', listStyle, viewItem.parent);
+	viewWriter.setAttribute('type', listType, viewItem.parent);
+
+	let cursor = data.item;
+	const indent = cursor.getAttribute('listIndent');
+
+	while (cursor.nextSibling && cursor.nextSibling.name === 'listItem' &&
+		cursor.nextSibling.getAttribute('listIndent') === indent) {
+		cursor = cursor.nextSibling;
+		viewWriter.setAttribute('listType', data.attributeNewValue, cursor);
+	}
+
+	cursor = data.item;
+	while (cursor.previousSibling && cursor.previousSibling.name === 'listItem' && 
+		cursor.previousSibling.getAttribute('listIndent') === indent) {
+		cursor = cursor.previousSibling;
+		viewWriter.setAttribute('listType', data.attributeNewValue, cursor);
+	}
 
 	// Consumable insertion of children inside the item. They are already handled by re-building the item in view.
 	for ( const child of data.item.getChildren() ) {
@@ -375,8 +405,20 @@ export function viewModelConverter( evt, data, conversionApi ) {
 		writer.setAttribute( 'listIndent', indent, listItem );
 
 		// Set 'bulleted' as default. If this item is pasted into a context,
-		const type = data.viewItem.parent && data.viewItem.parent.name == 'ol' ? 'numbered' : 'bulleted';
-		writer.setAttribute( 'listType', type, listItem );
+	    let type = 'bulleted';
+
+	    if (data.viewItem.parent && data.viewItem.parent.name === 'ol') {
+	    	if (data.viewItem.parent._styles.get('list-style') === 'decimal' || 
+	    		data.viewItem.parent.getAttribute('type') === '1') {
+	    		type = 'numbered';
+	    	} else {
+	    		type = 'lettered';
+	    	}
+		} else {
+	      type = 'bulleted';
+	    }
+
+	    writer.setAttribute('listType', type, listItem);
 
 		// Try to find allowed parent for list item.
 		const splitResult = conversionApi.splitToAllowedParent( listItem, data.modelCursor );
