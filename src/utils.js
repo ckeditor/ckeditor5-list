@@ -36,14 +36,23 @@ export function createViewListItemElement( writer ) {
 export function generateLiInUl( modelItem, conversionApi ) {
 	const mapper = conversionApi.mapper;
 	const viewWriter = conversionApi.writer;
-	const listType = modelItem.getAttribute( 'listType' ) == 'numbered' ? 'ol' : 'ul';
-	const viewItem = createViewListItemElement( viewWriter );
+	const listType = modelItem.getAttribute('listType') === 'numbered' || modelItem.getAttribute('listType') === 'lettered' ? 'ol' : 'ul';
+	let listStyle = null;
 
-	const viewList = viewWriter.createContainerElement( listType, null );
+	if (modelItem.getAttribute('listType') === 'numbered') {
+		listStyle = { 'style': 'list-style: decimal', 'type': '1' };
+	} else if (modelItem.getAttribute('listType') === 'lettered') {
+		listStyle = { 'style': 'list-style: lower-alpha', 'type': 'a' };
+	} else {
+		listStyle = null;
+	}
 
-	viewWriter.insert( viewWriter.createPositionAt( viewList, 0 ), viewItem );
+	const viewItem = createViewListItemElement(viewWriter);
+	const viewList = viewWriter.createContainerElement(listType, listStyle);
 
-	mapper.bindElements( modelItem, viewItem );
+	viewWriter.insert(viewWriter.createPositionAt(viewList, 0), viewItem);
+
+	mapper.bindElements(modelItem, viewItem);
 
 	return viewItem;
 }
@@ -82,6 +91,11 @@ export function injectViewList( modelItem, injectedItem, conversionApi, model ) 
 		// Break the list after it. The inserted view item will be added in the broken space.
 		const viewItem = mapper.toViewElement( refItem );
 		insertPosition = viewWriter.breakContainer( viewWriter.createPositionAfter( viewItem ) );
+		if (refItem.getAttribute('listType') !== modelItem.getAttribute('listType')) {
+			const brElement = viewWriter.createEmptyElement('paragraph');
+			viewWriter.insert(insertPosition, brElement);
+			insertPosition = viewWriter.createPositionAfter(brElement);
+	    }
 	} else {
 		// There is no list item with the same indent. Check the previous model item.
 		if ( prevItem && prevItem.name == 'listItem' ) {
@@ -163,7 +177,7 @@ export function mergeViewLists( viewWriter, firstList, secondList ) {
 	}
 
 	// Both parameters are list elements, so compare types now.
-	if ( firstList.name != secondList.name || firstList.getAttribute( 'class' ) !== secondList.getAttribute( 'class' ) ) {
+	if (firstList.name !== secondList.name || firstList.getAttribute('type') !== secondList.getAttribute('type')) {
 		return null;
 	}
 
