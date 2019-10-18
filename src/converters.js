@@ -161,17 +161,21 @@ export function modelViewMergeAfterChangeType( evt, data, conversionApi ) {
 	let cursor = data.item;
 	const indent = cursor.getAttribute('listIndent');
 
-	while (cursor.nextSibling && cursor.nextSibling.name === 'listItem' &&
-		cursor.nextSibling.getAttribute('listIndent') === indent) {
-		cursor = cursor.nextSibling;
-		viewWriter.setAttribute('listType', data.attributeNewValue, cursor);
-	}
+	if (listStyle) {
 
-	cursor = data.item;
-	while (cursor.previousSibling && cursor.previousSibling.name === 'listItem' && 
-		cursor.previousSibling.getAttribute('listIndent') === indent) {
-		cursor = cursor.previousSibling;
-		viewWriter.setAttribute('listType', data.attributeNewValue, cursor);
+		while (cursor.nextSibling && cursor.nextSibling.name === 'listItem' &&
+			cursor.nextSibling.getAttribute('listIndent') === indent) {
+			cursor = cursor.nextSibling;
+			viewWriter.setAttribute('listType', data.attributeNewValue, cursor);
+		}
+
+		cursor = data.item;
+		while (cursor.previousSibling && cursor.previousSibling.name === 'listItem' && 
+			cursor.previousSibling.getAttribute('listIndent') === indent) {
+			cursor = cursor.previousSibling;
+			viewWriter.setAttribute('listType', data.attributeNewValue, cursor);
+		}
+
 	}
 
 	// Consumable insertion of children inside the item. They are already handled by re-building the item in view.
