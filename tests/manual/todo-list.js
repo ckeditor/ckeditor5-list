@@ -6,15 +6,13 @@
 /* globals console, window, document */
 
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-import Enter from '@ckeditor/ckeditor5-enter/src/enter';
-import Typing from '@ckeditor/ckeditor5-typing/src/typing';
+import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
 import Heading from '@ckeditor/ckeditor5-heading/src/heading';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import Highlight from '@ckeditor/ckeditor5-highlight/src/highlight';
 import Link from '@ckeditor/ckeditor5-link/src/link';
 import Table from '@ckeditor/ckeditor5-table/src/table';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
-import Undo from '@ckeditor/ckeditor5-undo/src/undo';
 import Clipboard from '@ckeditor/ckeditor5-clipboard/src/clipboard';
 import List from '../../src/list';
 import FontSize from '@ckeditor/ckeditor5-font/src/fontsize';
@@ -22,7 +20,7 @@ import TodoList from '../../src/todolist';
 
 ClassicEditor
 	.create( document.querySelector( '#editor' ), {
-		plugins: [ Enter, Typing, Heading, Highlight, Table, Bold, Paragraph, Undo, List, TodoList, Clipboard, Link, FontSize ],
+		plugins: [ Essentials, Heading, Highlight, Table, Bold, Paragraph, List, TodoList, Clipboard, Link, FontSize ],
 		toolbar: [
 			'heading',
 			'|',
@@ -47,9 +45,9 @@ ClassicEditor
 
 		contentPreviewBox.innerHTML = editor.getData();
 
-		editor.model.document.on( 'change:data', () => {
-			contentPreviewBox.innerHTML = editor.getData();
-		} );
+		// editor.model.document.on( 'change:data', () => {
+		// 	contentPreviewBox.innerHTML = editor.getData();
+		// } );
 	} )
 	.catch( err => {
 		console.error( err.stack );

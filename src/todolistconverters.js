@@ -95,9 +95,9 @@ export function dataModelViewInsertion( model ) {
 
 		const label = viewWriter.createAttributeElement( 'label', {
 			class: 'todo-list__label'
-		} );
+		}, { priority: 1 } );
 
-		const checkbox = viewWriter.createEmptyElement( 'input', {
+		const checkbox = viewWriter.createUIElement( 'input', {
 			type: 'checkbox',
 			disabled: 'disabled',
 		} );
@@ -139,7 +139,7 @@ export function dataModelViewTextInsertion( evt, data, conversionApi ) {
 	const viewPosition = conversionApi.mapper.toViewPosition( data.range.start );
 	const viewText = viewWriter.createText( data.item.data );
 
-	const span = viewWriter.createAttributeElement( 'span', { class: 'todo-list__label__description' } );
+	const span = viewWriter.createAttributeElement( 'span', { class: 'todo-list__label__description' }, { priority: 1 } );
 	const label = viewPosition.parent.getChild( 0 );
 
 	viewWriter.insert( viewWriter.createPositionAt( viewPosition.parent, 'end' ), viewText );

@@ -74,6 +74,7 @@ export default class TodoListEditing extends Plugin {
 		// Define converters.
 		data.downcastDispatcher.on( 'insert:listItem', dataModelViewInsertion( model ), { priority: 'high' } );
 		data.downcastDispatcher.on( 'insert:$text', dataModelViewTextInsertion, { priority: 'high' } );
+		// data.mapper.on( 'modelToViewPosition', mapModelToViewZeroOffsetPosition( editing.view, editing.mapper ) );
 
 		editing.downcastDispatcher.on(
 			'insert:listItem',
